@@ -35,8 +35,8 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
   }
 }
 
-
-app.use('/static', express.static(__dirname + '/views'));
+app.use(app.router);
+app.use('/',exp.static(__dirname));
 
 var db = null,
     dbDetails = new Object();
