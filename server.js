@@ -65,14 +65,19 @@ app.get('/', function (req, res) {
     initDb(function(err){});
   }
   if (db) {
-    var col = db.collection('counts');
-    // Create a document with request IP and current time of request
-    col.insert({ip: req.ip, date: Date.now()});
-    col.count(function(err, count){
-      res.render('index.html', { pageCountMessage : count, dbInfo: dbDetails });
+
+    db.collection("respuestas2",function(error,col){
+      //console.log("Tenemos la colección");
+      usuarioCol=col;
     });
+    //var col = db.collection('counts');
+    // Create a document with request IP and current time of request
+    //col.insert({ip: req.ip, date: Date.now()});
+    //col.count(function(err, count){
+      res.render('quest-mobile.html');//, { pageCountMessage : count, dbInfo: dbDetails });
+    //});
   } else {
-    res.render('index.html', { pageCountMessage : null});
+    res.render('quest-mobile.html');//, { pageCountMessage : null});
   }
 });
 
@@ -90,6 +95,44 @@ app.get('/pagecount', function (req, res) {
     res.send('{ pageCount: -1 }');
   }
 });
+
+app.get("/respuestas", function(request,response){
+  var contenido;
+  //response.setHeader('Content-Type', 'application/json');
+  usuarioCol.find().toArray(function(err, docs){
+    //console.log("retrieved records:");
+    contenido=docs;
+    response.send(contenido);
+  });
+});
+
+app.post("/peticion",function(request,response){
+  var body='';
+    var resultado;//=JSON.parse(body);
+  //console.log("petición post recibida");
+  request.on('data', function(chunk) {
+    
+    body+=chunk;//chunk.toString();      
+    resultado=JSON.parse(body);
+    //console.log(resultado);
+    usuarioCol.insert(resultado,function(error){
+            if(error){
+              console.log("Hubo un error");
+            }
+            else{
+              console.log("Elemento insertado");
+            }
+          });
+
+    });
+    
+    request.on('end', function() {
+      // empty 200 OK response for now    
+      response.writeHead(200, "OK", {'Content-Type': 'text/html'});     
+      response.end();
+
+      console.log(resultado);
+    });
 
 // error handling
 app.use(function(err, req, res, next){
