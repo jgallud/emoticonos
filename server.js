@@ -133,6 +133,7 @@ app.post("/peticion",function(request,response){
 
       console.log(resultado);
     });
+});
 
 // error handling
 app.use(function(err, req, res, next){
