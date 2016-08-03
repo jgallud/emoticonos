@@ -35,8 +35,6 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
   }
 }
 
-app.use('/',exp.static(__dirname));
-
 var db = null,
     dbDetails = new Object();
 
