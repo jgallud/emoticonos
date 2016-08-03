@@ -60,6 +60,8 @@ var initDb = function(callback) {
   });
 };
 
+app.use(express.static(path.join(__dirname, 'static')));
+
 app.get('/', function (req, res) {
   // try to initialize the db on every request if it's not already
   // initialized.
@@ -142,8 +144,6 @@ app.use(function(err, req, res, next){
   console.error(err.stack);
   res.status(500).send('Something bad happened!');
 });
-
-app.use('/',exp.static(__dirname));
 
 initDb(function(err){
   console.log('Error connecting to Mongo. Message:\n'+err);
