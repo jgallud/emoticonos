@@ -34,6 +34,10 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
 
   }
 }
+
+
+app.use('/static', express.static(__dirname + '/views'));
+
 var db = null,
     dbDetails = new Object();
 
@@ -60,7 +64,6 @@ var initDb = function(callback) {
   });
 };
 
-app.use(express.static(path.join(__dirname, 'static')));
 
 app.get('/', function (req, res) {
   // try to initialize the db on every request if it's not already
