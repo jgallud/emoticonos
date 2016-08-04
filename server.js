@@ -34,6 +34,7 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
 
   }
 }
+mongoURL="172.30.101.96:27017/sampledb";
 
 var db = null,
     dbDetails = new Object();
@@ -149,10 +150,10 @@ app.post("/peticion",function(request,response){
     if (db) {
 
       db.collection("respuestas2",function(error,col){
-      //console.log("Tenemos la colección");
-      usuarioCol=col;
-    });
-    usuarioCol.insert(resultado,function(error){
+        //console.log("Tenemos la colección");
+        usuarioCol=col;
+      });
+      usuarioCol.insert(resultado,function(error){
             if(error){
               console.log("Hubo un error");
             }
@@ -162,9 +163,9 @@ app.post("/peticion",function(request,response){
           });
     }
     else
-      { 
-            response.send('{error:"No se ha inicializado db"}');
-          }
+    { 
+      response.send('{error:"No se ha inicializado db"}');
+    }
 });
 
 // error handling
