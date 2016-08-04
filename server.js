@@ -34,7 +34,7 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
 
   }
 }
-mongoURL="172.30.101.96:27017/sampledb";
+mongoURL="mongodb://172.30.101.96:27017/sampledb";
 
 var db = null,
     dbDetails = new Object();
