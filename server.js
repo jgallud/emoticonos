@@ -108,16 +108,18 @@ app.get("/respuestas", function(request,response){
   }
   if (db) {
 
+    //db.collection('respuestas2').find().toArray
+
     db.collection("respuestas2",function(error,col){
       //console.log("Tenemos la colección");
       usuarioCol=col;
     });
   
     usuarioCol.find().toArray(function(err, docs){
-    //console.log("retrieved records:");
-    contenido=docs;
-    response.send(contenido);
-  });
+      //console.log("retrieved records:");
+      contenido=docs;
+      response.send(contenido);
+    });
   }
   else{
     response.send('{error:"No se ha inicializado db"}');
@@ -133,7 +135,15 @@ app.post("/peticion",function(request,response){
     body+=chunk;//chunk.toString();      
     resultado=JSON.parse(body);
     //console.log(resultado);
-     if (!db) {
+    });
+    request.on('end', function() {
+      // empty 200 OK response for now    
+      response.writeHead(200, "OK", {'Content-Type': 'text/html'});     
+      response.end();
+
+      console.log(resultado);
+    });
+    if (!db) {
     initDb(function(err){});
     }
     if (db) {
@@ -155,14 +165,6 @@ app.post("/peticion",function(request,response){
       { 
             response.send('{error:"No se ha inicializado db"}');
           }
-    });
-    request.on('end', function() {
-      // empty 200 OK response for now    
-      response.writeHead(200, "OK", {'Content-Type': 'text/html'});     
-      response.end();
-
-      console.log(resultado);
-    });
 });
 
 // error handling
